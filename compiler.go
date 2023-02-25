@@ -137,12 +137,16 @@ func Tokenizer(src string) (tokens []Token) {
 }
 
 func Parser(tokens []Token) Ast {
-	tracer := &Tracer{
-		tokens: tokens,
+	t := &Tracer{tokens: tokens}
+
+	var stmts []Node
+	for t.idx < len(tokens) {
+		stmts = append(stmts, t.walk())
 	}
+
 	return Ast{
 		typ:  Program,
-		body: []Node{tracer.walk()},
+		body: stmts,
 	}
 }
 
@@ -179,9 +183,6 @@ type Tracer struct {
 }
 
 func (t *Tracer) walk() Node {
-	if t.idx >= len(t.tokens) {
-		panic("error for parsing")
-	}
 	tok := t.tokens[t.idx]
 	if tok.typ == Number || tok.typ == String {
 		t.idx++

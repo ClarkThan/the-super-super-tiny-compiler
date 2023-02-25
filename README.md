@@ -16,6 +16,10 @@ $ ./compiler 23
 
 $ ./compiler '(add 23 (len "Jordan"))'
 add(23, len("Jordan"));
+
+$ ./compiler '(foo "Jordan") (add 23 45)'
+foo("Jordan");
+add(23, 45);
 ```
 
 
